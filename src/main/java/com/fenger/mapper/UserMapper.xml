@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenger.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.fenger.domain.User">
+        <id column="userid" jdbcType="INTEGER" property="userid"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="userpwd" jdbcType="VARCHAR" property="userpwd"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="did" jdbcType="INTEGER" property="did"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    userid, username, userpwd, sex, address, did
+  </sql>
+    <select id="selectByExample" parameterType="com.fenger.domain.UserExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+        <if test="limit != null">
+            <if test="offset != null">
+                limit ${offset}, ${limit}
+            </if>
+            <if test="offset == null">
+                limit ${limit}
+            </if>
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where userid = #{userid,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from user
+    where userid = #{userid,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.fenger.domain.UserExample">
+        delete from user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.fenger.domain.User">
+    insert into user (userid, username, userpwd, 
+      sex, address, did)
+    values (#{userid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{userpwd,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{did,jdbcType=INTEGER})
+  </insert>
+    <insert id="insertSelective" parameterType="com.fenger.domain.User">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userid != null">
+                userid,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="userpwd != null">
+                userpwd,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="did != null">
+                did,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userid != null">
+                #{userid,jdbcType=INTEGER},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="userpwd != null">
+                #{userpwd,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="did != null">
+                #{did,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.fenger.domain.UserExample" resultType="java.lang.Long">
+        select count(*) from user
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update user
+        <set>
+            <if test="record.userid != null">
+                userid = #{record.userid,jdbcType=INTEGER},
+            </if>
+            <if test="record.username != null">
+                username = #{record.username,jdbcType=VARCHAR},
+            </if>
+            <if test="record.userpwd != null">
+                userpwd = #{record.userpwd,jdbcType=VARCHAR},
+            </if>
+            <if test="record.sex != null">
+                sex = #{record.sex,jdbcType=VARCHAR},
+            </if>
+            <if test="record.address != null">
+                address = #{record.address,jdbcType=VARCHAR},
+            </if>
+            <if test="record.did != null">
+                did = #{record.did,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update user
+        set userid = #{record.userid,jdbcType=INTEGER},
+        username = #{record.username,jdbcType=VARCHAR},
+        userpwd = #{record.userpwd,jdbcType=VARCHAR},
+        sex = #{record.sex,jdbcType=VARCHAR},
+        address = #{record.address,jdbcType=VARCHAR},
+        did = #{record.did,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.fenger.domain.User">
+        update user
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="userpwd != null">
+                userpwd = #{userpwd,jdbcType=VARCHAR},
+            </if>
+            <if test="sex != null">
+                sex = #{sex,jdbcType=VARCHAR},
+            </if>
+            <if test="address != null">
+                address = #{address,jdbcType=VARCHAR},
+            </if>
+            <if test="did != null">
+                did = #{did,jdbcType=INTEGER},
+            </if>
+        </set>
+        where userid = #{userid,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.fenger.domain.User">
+    update user
+    set username = #{username,jdbcType=VARCHAR},
+      userpwd = #{userpwd,jdbcType=VARCHAR},
+      sex = #{sex,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      did = #{did,jdbcType=INTEGER}
+    where userid = #{userid,jdbcType=INTEGER}
+  </update>
+
+    <select id="queryRoleByUserId" resultType="java.lang.String">
+      select t2.rolename
+    from user_role t1
+    inner join role t2
+    on t1.roleid=t2.roleid
+    where t1.userid=#{userid}
+  </select>
+    <select id="queryPermissionByUserId" resultType="java.lang.String">
+     select t3.percode
+    from user_role t1
+    inner join role_permission t2
+    on t1.roleid=t2.roleid
+    inner join permission t3
+    on t3.perid = t2.perid
+    where t1.userid=#{userid}
+  </select>
+</mapper>

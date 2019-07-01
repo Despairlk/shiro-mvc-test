@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fenger.mapper.PermissionMapper">
+  <resultMap id="BaseResultMap" type="com.fenger.domain.Permission">
+    <id column="perid" jdbcType="INTEGER" property="perid" />
+    <result column="pername" jdbcType="VARCHAR" property="pername" />
+    <result column="percode" jdbcType="VARCHAR" property="percode" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    perid, pername, percode
+  </sql>
+  <select id="selectByExample" parameterType="com.fenger.domain.PermissionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from permission
+    where perid = #{perid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from permission
+    where perid = #{perid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.fenger.domain.PermissionExample">
+    delete from permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.fenger.domain.Permission">
+    insert into permission (perid, pername, percode
+      )
+    values (#{perid,jdbcType=INTEGER}, #{pername,jdbcType=VARCHAR}, #{percode,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.fenger.domain.Permission">
+    insert into permission
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="perid != null">
+        perid,
+      </if>
+      <if test="pername != null">
+        pername,
+      </if>
+      <if test="percode != null">
+        percode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="perid != null">
+        #{perid,jdbcType=INTEGER},
+      </if>
+      <if test="pername != null">
+        #{pername,jdbcType=VARCHAR},
+      </if>
+      <if test="percode != null">
+        #{percode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.fenger.domain.PermissionExample" resultType="java.lang.Long">
+    select count(*) from permission
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update permission
+    <set>
+      <if test="record.perid != null">
+        perid = #{record.perid,jdbcType=INTEGER},
+      </if>
+      <if test="record.pername != null">
+        pername = #{record.pername,jdbcType=VARCHAR},
+      </if>
+      <if test="record.percode != null">
+        percode = #{record.percode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update permission
+    set perid = #{record.perid,jdbcType=INTEGER},
+      pername = #{record.pername,jdbcType=VARCHAR},
+      percode = #{record.percode,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.fenger.domain.Permission">
+    update permission
+    <set>
+      <if test="pername != null">
+        pername = #{pername,jdbcType=VARCHAR},
+      </if>
+      <if test="percode != null">
+        percode = #{percode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where perid = #{perid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.fenger.domain.Permission">
+    update permission
+    set pername = #{pername,jdbcType=VARCHAR},
+      percode = #{percode,jdbcType=VARCHAR}
+    where perid = #{perid,jdbcType=INTEGER}
+  </update>
+</mapper>
